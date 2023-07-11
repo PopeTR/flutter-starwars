@@ -1,6 +1,7 @@
 class GetAllPeopleSchema {
-  static String getTaskJson = """ query {
-  allPeople {
+  static String getPeople(int first) {
+    return """ query {
+  allPeople(first: $first) {
     totalCount
     people {
       name
@@ -19,4 +20,5 @@ class GetAllPeopleSchema {
   }
 }
 """;
+  }
 }
