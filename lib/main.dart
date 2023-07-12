@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:star_wars/providers/characters_data.dart';
 import 'package:star_wars/providers/films_data.dart';
-import 'package:star_wars/screens/home.dart';
 import 'package:star_wars/screens/splash.dart';
 
 const Color seedColor = Color.fromARGB(255, 0, 0, 0);
@@ -44,7 +42,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.client}) : super(key: key);
+  const MyApp({super.key, required this.client});
   final ValueNotifier<GraphQLClient> client;
   @override
   Widget build(BuildContext context) {

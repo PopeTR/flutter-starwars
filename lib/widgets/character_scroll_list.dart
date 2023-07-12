@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/character.dart';
 import '../providers/characters_data.dart';
 import '../screens/character_details.dart';
 
@@ -35,7 +33,6 @@ class _CharacterScrollListState extends State<CharacterScrollList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CharactersProvider>(builder: (c, allCharacters, _) {
-      print(allCharacters.people.length);
       if (allCharacters.people.isEmpty) {
         return const CircularProgressIndicator();
       } else {
@@ -52,14 +49,14 @@ class _CharacterScrollListState extends State<CharacterScrollList> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (ctx) => CharacterDetailsScreen(
-                            character: Character.fromJson(character)),
+                        builder: (ctx) =>
+                            CharacterDetailsScreen(character: character),
                       ),
                     );
                   },
                   child: ListTile(
-                    title: Text(character['name']),
-                    subtitle: Text(character['homeworld']['name']),
+                    title: Text(character.name),
+                    subtitle: Text(character.homeworld.name),
                   ),
                 );
               } else {

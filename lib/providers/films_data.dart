@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:star_wars/models/film.dart';
 import '../schemas/get_all_films.dart';
 
 class FilmsProvider extends ChangeNotifier {
-  // Define a private list to store the fetched people
-  List<dynamic> _films = [];
+  List<Film> _films = [];
 
-  // Getter for the people list
-  List<dynamic> get films => _films;
+  List<Film> get films => _films;
 
-  // Fetch allPeople from SWAPI
   Future<void> fetchAllFilms(BuildContext context) async {
     final client = GraphQLProvider.of(context).value;
-    final result = await client
+    final QueryResult response = await client
         .query(QueryOptions(document: gql(GetAllFilmsSchema.getFilmsJson)));
 
-    if (result.hasException) {
-      print('GraphQL Error: ${result.exception.toString()}');
+    if (response.hasException) {
+      print('GraphQL Error: ${response.exception.toString()}');
     } else {
-      _films = result.data?['allFilms']['films'] ?? [];
+      Map<String, dynamic> data = response.data!;
+
+      FilmQueryResponse queryResponse = FilmQueryResponse.fromJson(data);
+      _films = queryResponse.films;
       notifyListeners();
     }
   }

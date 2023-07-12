@@ -8,7 +8,7 @@ import 'package:transparent_image/transparent_image.dart';
 class Carousel extends StatelessWidget {
   Carousel({super.key, required this.allFilms});
 
-  final List<Film> allFilms;
+  final List<dynamic> allFilms;
   final CarouselController buttonCarouselController = CarouselController();
 
   @override

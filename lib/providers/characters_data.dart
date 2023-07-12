@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
+import 'package:star_wars/models/character.dart';
 import '../schemas/get_all_people.dart';
 
 class CharactersProvider extends ChangeNotifier {
@@ -14,15 +14,18 @@ class CharactersProvider extends ChangeNotifier {
 
   Future<void> fetchPeople(BuildContext context) async {
     final client = GraphQLProvider.of(context).value;
-    final result = await client.query(
+    final QueryResult response = await client.query(
         QueryOptions(document: gql(GetAllPeopleSchema.getPeople(_pageCount))));
 
-    if (result.hasException) {
-      print('GraphQL Error: ${result.exception.toString()}');
+    if (response.hasException) {
+      print('GraphQL Error: ${response.exception.toString()}');
     } else {
-      _people = result.data?['allPeople']['people'] ?? [];
+      Map<String, dynamic> data = response.data!;
+
+      QueryResponse queryResponse = QueryResponse.fromJson(data);
+      _people = queryResponse.characters;
       _currentPeople = _pageCount;
-      _totalPeople = result.data?['allPeople']['totalCount'] ?? _pageCount;
+      _totalPeople = response.data?['allPeople']['totalCount'] ?? _pageCount;
       notifyListeners();
     }
   }
@@ -30,18 +33,22 @@ class CharactersProvider extends ChangeNotifier {
   Future<void> loadMorePeople(BuildContext context) async {
     if (_currentPeople < _totalPeople) {
       final client = GraphQLProvider.of(context).value;
-      final result = await client.query(QueryOptions(
+      final response = await client.query(QueryOptions(
         document:
             gql(GetAllPeopleSchema.getPeople(_currentPeople + _pageCount)),
         variables: {'page': _currentPeople + _pageCount},
       ));
 
-      if (result.hasException) {
-        print('GraphQL Error: ${result.exception.toString()}');
+      if (response.hasException) {
+        print('GraphQL Error: ${response.exception.toString()}');
       } else {
+        Map<String, dynamic> data = response.data!;
+
+        QueryResponse queryResponse = QueryResponse.fromJson(data);
+
         _people.addAll(
             //  Had to do this as SWAPI GQL doesnt have the ability to request sublists. So done manually in Provider
-            result.data?['allPeople']['people'].sublist(_currentPeople) ?? []);
+            queryResponse.characters.sublist(_currentPeople));
         _currentPeople += _pageCount;
         notifyListeners();
       }

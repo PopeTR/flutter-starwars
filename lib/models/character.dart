@@ -10,6 +10,11 @@ class Character {
     required this.starshipConnection,
     this.homeworld,
   });
+// This allows you to print the value of the instance rather than read "Instance of ..."
+  @override
+  String toString() {
+    return 'Character: {name: $name, species: $species, homeworld: $homeworld}';
+  }
 
   factory Character.fromJson(Map<String, dynamic> character) {
     return Character(
@@ -71,5 +76,27 @@ class Planet {
       typename: json['__typename'],
       name: json['name'],
     );
+  }
+}
+
+// Added in a Query Response class that takes the gql and returns the data in the format we need
+class QueryResponse {
+  final List<Character> characters;
+
+  QueryResponse({required this.characters});
+
+  factory QueryResponse.fromJson(Map<String, dynamic> json) {
+    List<dynamic> characterDataList =
+        json['allPeople']['people'] as List<dynamic>;
+    List<Character> characters = characterDataList.map((characterData) {
+      return Character.fromJson(characterData);
+    }).toList();
+
+    return QueryResponse(characters: characters);
+  }
+  // This allows you to print the value of the instance rather than read "Instance of ..."
+  @override
+  String toString() {
+    return 'QueryResponse: {characters: $characters}';
   }
 }
