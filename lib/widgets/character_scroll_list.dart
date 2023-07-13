@@ -33,7 +33,6 @@ class _CharacterScrollListState extends State<CharacterScrollList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CharactersProvider>(builder: (c, allCharacters, _) {
-      print(allCharacters);
       if (allCharacters.people.isEmpty) {
         return const CircularProgressIndicator();
       } else {

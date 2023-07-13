@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/character.dart';
 import '../models/film.dart';
+import '../widgets/crawler.dart';
+import '../widgets/perspective.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen(
@@ -50,7 +52,9 @@ class DetailsScreen extends StatelessWidget {
                   )),
           Text(film!.releaseDate),
           const SizedBox(height: 8),
-          Text(film!.openingCrawl),
+          Flexible(
+            child: Perspective(child: Crawler(text: film!.openingCrawl)),
+          ),
         ],
       );
     }
