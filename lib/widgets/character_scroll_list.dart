@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/characters_data.dart';
-import '../screens/character_details.dart';
+import '../screens/details.dart';
 
 class CharacterScrollList extends StatefulWidget {
   const CharacterScrollList({super.key});
@@ -33,6 +33,7 @@ class _CharacterScrollListState extends State<CharacterScrollList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CharactersProvider>(builder: (c, allCharacters, _) {
+      print(allCharacters);
       if (allCharacters.people.isEmpty) {
         return const CircularProgressIndicator();
       } else {
@@ -49,8 +50,10 @@ class _CharacterScrollListState extends State<CharacterScrollList> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (ctx) =>
-                            CharacterDetailsScreen(character: character),
+                        builder: (ctx) => DetailsScreen(
+                          character: character,
+                          isCharacterPage: true,
+                        ),
                       ),
                     );
                   },

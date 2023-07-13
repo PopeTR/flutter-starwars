@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:star_wars/screens/home.dart';
 
@@ -14,20 +15,17 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late final Timer _timer;
-
   @override
   void initState() {
     super.initState();
-    _timer = Timer(const Duration(seconds: 5), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (ctx) => const HomeScreen()));
+    Future.delayed(const Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     });
   }
 
   @override
   void dispose() {
-    _timer.cancel();
     super.dispose();
   }
 
@@ -36,10 +34,19 @@ class _SplashScreenState extends State<SplashScreen> {
     Provider.of<FilmsProvider>(context, listen: false).fetchAllFilms(context);
     Provider.of<CharactersProvider>(context, listen: false)
         .fetchPeople(context);
+
     return Scaffold(
-      body: Center(
-        child: Image.asset('assets/images/Star_Wars_Logo.png'),
-      ),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/Star_Wars_Logo.png'),
+            Lottie.asset(
+              'assets/images/yoda.json',
+              repeat: true,
+              reverse: true,
+            ),
+          ]),
     );
   }
 }

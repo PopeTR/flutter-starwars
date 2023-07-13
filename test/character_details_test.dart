@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:star_wars/models/character.dart';
-import 'package:star_wars/screens/character_details.dart';
+import 'package:star_wars/screens/details.dart';
 
 void main() {
   testWidgets('Character Details page displays Character name', (tester) async {
@@ -13,7 +13,11 @@ void main() {
     });
 
     await tester.pumpWidget(
-      MaterialApp(home: CharacterDetailsScreen(character: character)),
+      MaterialApp(
+          home: DetailsScreen(
+        character: character,
+        isCharacterPage: true,
+      )),
     );
     final textFinder = find.text(character.name);
     expect(textFinder, findsOneWidget);

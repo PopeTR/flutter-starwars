@@ -5,10 +5,12 @@ import '../main.dart';
 import '../models/film.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../screens/details.dart';
+
 class Carousel extends StatelessWidget {
   Carousel({super.key, required this.allFilms});
 
-  final List<dynamic> allFilms;
+  final List<Film> allFilms;
   final CarouselController buttonCarouselController = CarouselController();
 
   @override
@@ -24,60 +26,68 @@ class Carousel extends StatelessWidget {
             aspectRatio: 2.0,
             initialPage: 2,
           ),
-          items: allFilms.map((i) {
-            var index = allFilms.indexOf(i);
+          items: allFilms.map((film) {
+            var index = allFilms.indexOf(film);
             return Builder(
               builder: (BuildContext context) {
                 return InkWell(
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (ctx) => CharacterDetailsScreen(
-                    //         character: Character.fromJson(i)),
-                    //   ),
-                    // );
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 5.0, vertical: 10.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: starWarsYellow, width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                              color: starWarsYellow.withOpacity(0.5),
-                              spreadRadius: 3,
-                              blurRadius: 5)
-                        ]),
-                    child: Stack(
-                      children: [
-                        FadeInImage(
-                          placeholder: MemoryImage(kTransparentImage),
-                          image: NetworkImage(filmImages[index].url),
-                          fit: BoxFit.cover,
-                          height: double.infinity,
-                          width: double.infinity,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) => DetailsScreen(
+                          film: film,
+                          isCharacterPage: false,
+                          image: filmImages[index].url,
                         ),
-                        Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3)),
-                          child: Center(
-                            child: Text(
-                              '${i.title}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .fontWeight),
+                      ),
+                    );
+                  },
+                  child: Hero(
+                    tag: film.title,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 5.0, vertical: 10.0),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: starWarsYellow, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                                color: starWarsYellow.withOpacity(0.5),
+                                spreadRadius: 3,
+                                blurRadius: 5)
+                          ]),
+                      child: Stack(
+                        children: [
+                          FadeInImage(
+                            placeholder: MemoryImage(kTransparentImage),
+                            image: NetworkImage(filmImages[index].url),
+                            fit: BoxFit.cover,
+                            height: double.infinity,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3)),
+                            child: Center(
+                              child: ExcludeSemantics(
+                                child: Text(
+                                  film.title,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .fontWeight),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );

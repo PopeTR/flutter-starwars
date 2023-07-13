@@ -1,8 +1,12 @@
 class Film {
-  final String? title;
-  final dynamic releaseDate;
+  final String title;
+  final String releaseDate;
+  final String openingCrawl;
 
-  Film({this.title, this.releaseDate});
+  Film(
+      {required this.title,
+      required this.releaseDate,
+      required this.openingCrawl});
 
   @override
   String toString() {
@@ -10,7 +14,10 @@ class Film {
   }
 
   factory Film.fromJson(Map<String, dynamic> json) {
-    return Film(releaseDate: json['releaseData'], title: json['title']);
+    return Film(
+        releaseDate: json['releaseDate'],
+        title: json['title'],
+        openingCrawl: json['openingCrawl']);
   }
 }
 

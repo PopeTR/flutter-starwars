@@ -5,6 +5,7 @@ query {
     films {
       title
       releaseDate
+      openingCrawl
     }
   }
 } """;

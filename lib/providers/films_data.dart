@@ -12,7 +12,7 @@ class FilmsProvider extends ChangeNotifier {
     final client = GraphQLProvider.of(context).value;
     final QueryResult response = await client
         .query(QueryOptions(document: gql(GetAllFilmsSchema.getFilmsJson)));
-
+    print(response);
     if (response.hasException) {
       print('GraphQL Error: ${response.exception.toString()}');
     } else {

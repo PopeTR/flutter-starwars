@@ -1,13 +1,15 @@
 class Character {
   final String name;
   final Species? species;
-  final PersonStarshipsConnection starshipConnection;
+  final PersonStarshipsConnection? starshipConnection;
   final Planet? homeworld;
+  final List<String>? starships;
 
   Character({
     required this.name,
     this.species,
-    required this.starshipConnection,
+    this.starshipConnection,
+    this.starships,
     this.homeworld,
   });
 // This allows you to print the value of the instance rather than read "Instance of ..."
@@ -17,13 +19,18 @@ class Character {
   }
 
   factory Character.fromJson(Map<String, dynamic> character) {
+    final List<dynamic>? starships =
+        character['starshipConnection']['starships'];
+    List<String> getStarshipNames() {
+      return starships?.map((e) => e['name'] as String).toList() ?? [];
+    }
+
     return Character(
       name: character['name'],
       species: character['species'] != null
           ? Species.fromJson(character['species'])
           : null,
-      starshipConnection:
-          PersonStarshipsConnection.fromJson(character['starshipConnection']),
+      starships: getStarshipNames(),
       homeworld: character['homeworld'] != null
           ? Planet.fromJson(character['homeworld'])
           : null,
