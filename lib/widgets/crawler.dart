@@ -1,5 +1,3 @@
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:star_wars/main.dart';
 
@@ -13,28 +11,9 @@ class Crawler extends StatefulWidget {
 
 class _CrawlerState extends State<Crawler> {
   final _scrollController = ScrollController();
-  AudioPlayer audioPlayer = AudioPlayer();
-
-  Future<void> playMusic() async {
-    try {
-      int result = await audioPlayer.play(
-          'https://s.cdpn.io/1202/Star_Wars_original_opening_crawl_1977.mp3');
-      if (result == 1) {
-        // success
-        print('Music started playing');
-      } else {
-        // error
-        print('Error playing music');
-      }
-    } catch (e) {
-      // error
-      print('Error loading music: $e');
-    }
-  }
 
   @override
   void initState() {
-    playMusic();
     Future.delayed(
         const Duration(milliseconds: 1000),
         () => _scrollController.animateTo(
@@ -43,18 +22,6 @@ class _CrawlerState extends State<Crawler> {
             curve: Curves.linear));
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    Future<void> stopMusic() async {
-      int result = await audioPlayer.stop();
-      if (result == 1) {
-        // success
-      }
-    }
   }
 
   @override

@@ -1,9 +1,12 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:star_wars/providers/characters_data.dart';
 import 'package:star_wars/providers/films_data.dart';
+import 'package:star_wars/providers/music_data.dart';
 import 'package:star_wars/screens/splash.dart';
+import 'package:star_wars/widgets/app_lifecycle_observer.dart';
 
 const Color seedColor = Color.fromARGB(255, 0, 0, 0);
 const Color white = Color.fromARGB(255, 255, 255, 255);
@@ -41,22 +44,45 @@ void main() async {
   runApp(MyApp(client: client));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key, required this.client});
   final ValueNotifier<GraphQLClient> client;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
+  late LifecycleObserver lifecycleObserver;
+
+  @override
+  void initState() {
+    super.initState();
+    lifecycleObserver = LifecycleObserver(audioPlayer: audioPlayer);
+    WidgetsBinding.instance.addObserver(lifecycleObserver);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(lifecycleObserver);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
-      client: client,
+      client: widget.client,
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => CharactersProvider()),
           ChangeNotifierProvider(create: (context) => FilmsProvider()),
+          ChangeNotifierProvider(create: (context) => MusicProvider()),
         ],
         child: MaterialApp(
           title: 'Star Wars Characters',
           theme: theme,
-          home: const SplashScreen(),
+          home: SplashScreen(audioPlayer),
         ),
       ),
     );

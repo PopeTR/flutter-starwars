@@ -104,7 +104,8 @@ class DetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(isCharacterPage ? 'Character' : 'Film')),
-      body: Padding(padding: const EdgeInsets.all(16.0), child: content),
+      body: SafeArea(
+          child: Padding(padding: const EdgeInsets.all(16.0), child: content)),
     );
   }
 }
