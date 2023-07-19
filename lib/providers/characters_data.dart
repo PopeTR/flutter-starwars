@@ -30,6 +30,23 @@ class CharactersProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchAllPeople(BuildContext context) async {
+    final client = GraphQLProvider.of(context).value;
+    final QueryResult response = await client
+        .query(QueryOptions(document: gql(GetAllPeopleSchema.getPeople(null))));
+    print(response);
+    if (response.hasException) {
+      print('GraphQL Error: ${response.exception.toString()}');
+    } else {
+      Map<String, dynamic> data = response.data!;
+
+      QueryResponse queryResponse = QueryResponse.fromJson(data);
+      _people = queryResponse.characters;
+      _totalPeople = response.data?['allPeople']['totalCount'] ?? _pageCount;
+      notifyListeners();
+    }
+  }
+
   Future<void> loadMorePeople(BuildContext context) async {
     if (_currentPeople < _totalPeople) {
       final client = GraphQLProvider.of(context).value;

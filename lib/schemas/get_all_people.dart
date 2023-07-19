@@ -1,7 +1,9 @@
 class GetAllPeopleSchema {
-  static String getPeople(int first) {
+  static String getPeople(int? first) {
+    final bool hasFirst = first != null;
+
     return """ query {
-  allPeople(first: $first) {
+  allPeople${hasFirst ? '(first: $first)' : ''} {
     totalCount
     people {
       name

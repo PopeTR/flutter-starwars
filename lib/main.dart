@@ -11,6 +11,7 @@ import 'package:star_wars/widgets/app_lifecycle_observer.dart';
 const Color seedColor = Color.fromARGB(255, 0, 0, 0);
 const Color white = Color.fromARGB(255, 255, 255, 255);
 const Color starWarsYellow = Color.fromARGB(255, 255, 225, 0);
+const Color transparentStarWarsYellow = Color.fromARGB(255, 155, 137, 33);
 var kColorScheme = ColorScheme.fromSeed(
     brightness: Brightness.dark, seedColor: seedColor, background: seedColor);
 
@@ -20,9 +21,28 @@ final theme = ThemeData(
     appBarTheme: const AppBarTheme().copyWith(
       backgroundColor: seedColor,
       titleTextStyle: const TextStyle(
-          color: Color.fromARGB(255, 255, 225, 0),
-          fontWeight: FontWeight.bold,
-          fontSize: 20),
+          color: starWarsYellow, fontWeight: FontWeight.bold, fontSize: 20),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+        fillColor: starWarsYellow,
+        hintStyle: TextStyle(color: starWarsYellow),
+        focusColor: starWarsYellow,
+        focusedBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: starWarsYellow)),
+        labelStyle: TextStyle(color: starWarsYellow)),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: starWarsYellow,
+      selectionColor: starWarsYellow,
+      selectionHandleColor: starWarsYellow,
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      selectedLabelStyle: TextStyle(color: starWarsYellow),
+      selectedItemColor: starWarsYellow,
+      unselectedItemColor: transparentStarWarsYellow,
+      backgroundColor: Color.fromARGB(184, 50, 50, 50),
+      selectedIconTheme: IconThemeData(color: starWarsYellow),
+      unselectedIconTheme: IconThemeData(color: transparentStarWarsYellow),
+      unselectedLabelStyle: TextStyle(color: starWarsYellow),
     ),
     textTheme: const TextTheme(
         bodyLarge:

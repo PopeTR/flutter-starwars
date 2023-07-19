@@ -71,11 +71,11 @@ class PersonStarshipsConnection {
 
 class Planet {
   final String? typename;
-  final String? name;
+  final String name;
 
   Planet({
     this.typename,
-    this.name,
+    required this.name,
   });
 
   factory Planet.fromJson(Map<String, dynamic> json) {

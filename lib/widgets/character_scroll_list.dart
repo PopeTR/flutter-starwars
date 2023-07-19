@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:star_wars/widgets/character_list_item.dart';
 import '../providers/characters_data.dart';
-import '../screens/details.dart';
 
 class CharacterScrollList extends StatefulWidget {
   const CharacterScrollList({super.key});
@@ -33,46 +33,23 @@ class _CharacterScrollListState extends State<CharacterScrollList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CharactersProvider>(builder: (c, allCharacters, _) {
-      if (allCharacters.people.isEmpty) {
-        return const CircularProgressIndicator();
-      } else {
-        return Expanded(
-          child: ListView.builder(
-            itemCount: allCharacters.people.length + 1,
-            controller: controller,
-            itemBuilder: (ctx, index) {
-              if (index < allCharacters.people.length) {
-                final character = allCharacters.people[index];
-
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => DetailsScreen(
-                          character: character,
-                          isCharacterPage: true,
-                        ),
-                      ),
-                    );
-                  },
-                  child: ListTile(
-                    title: Text(character.name),
-                    subtitle: Text(character.homeworld.name),
-                  ),
-                );
-              } else {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }
-            },
-          ),
-        );
-      }
+      return ListView.builder(
+        itemCount: allCharacters.people.length + 1,
+        controller: controller,
+        itemBuilder: (ctx, index) {
+          if (index < allCharacters.people.length) {
+            final character = allCharacters.people[index];
+            return CharacterListItem(character: character);
+          } else {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 32),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+        },
+      );
     });
   }
 }
