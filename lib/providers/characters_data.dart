@@ -4,13 +4,13 @@ import 'package:star_wars/models/character.dart';
 import '../schemas/get_all_people.dart';
 
 class CharactersProvider extends ChangeNotifier {
-  List<dynamic> _people = [];
+  List<Character> _people = [];
   int _currentPeople = 0;
   int _totalPeople = 0;
   final int _pageCount = 10;
   String? afterCursor;
 
-  List<dynamic> get people => _people;
+  List<Character> get people => _people;
 
   Future<void> fetchPeople(BuildContext context) async {
     final client = GraphQLProvider.of(context).value;
@@ -34,7 +34,7 @@ class CharactersProvider extends ChangeNotifier {
     final client = GraphQLProvider.of(context).value;
     final QueryResult response = await client
         .query(QueryOptions(document: gql(GetAllPeopleSchema.getPeople(null))));
-    print(response);
+
     if (response.hasException) {
       print('GraphQL Error: ${response.exception.toString()}');
     } else {

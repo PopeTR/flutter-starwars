@@ -32,7 +32,6 @@ final theme = ThemeData(
         labelStyle: TextStyle(color: starWarsYellow)),
     textSelectionTheme: const TextSelectionThemeData(
       cursorColor: starWarsYellow,
-      selectionColor: starWarsYellow,
       selectionHandleColor: starWarsYellow,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(

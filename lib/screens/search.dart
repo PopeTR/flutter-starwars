@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:star_wars/models/character.dart';
 import '../providers/characters_data.dart';
 import '../widgets/character_list_item.dart';
 
@@ -11,14 +12,43 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<dynamic> filteredResults = [];
+  List<Character> filteredResults = [];
+  late List<Character> allPeople;
   final TextEditingController _searchController = TextEditingController();
-  void filterResults(String query, List<dynamic> characters) {
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final charactersProvider =
+        Provider.of<CharactersProvider>(context, listen: false);
+    await charactersProvider.fetchAllPeople(context).then((_) {
+      setState(() {
+        allPeople = charactersProvider.people;
+        filteredResults = allPeople;
+      });
+    });
+  }
+
+  void filterResults(String query, List<Character> characters) {
     setState(() {
       filteredResults = characters
           .where((character) =>
-              character['name'].toLowerCase().contains(query.toLowerCase()))
+              character.name.toLowerCase().contains(query.toLowerCase()) ||
+              character.homeworld!.name
+                  .toLowerCase()
+                  .contains(query.toLowerCase()))
           .toList();
+    });
+  }
+
+  void clearText() {
+    setState(() {
+      _searchController.clear();
+      filteredResults = allPeople;
     });
   }
 
@@ -30,9 +60,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<CharactersProvider>(context, listen: false)
-        .fetchAllPeople(context);
-
     return Scaffold(
       body: Column(
         children: [
@@ -41,28 +68,25 @@ class _SearchScreenState extends State<SearchScreen> {
             child: TextField(
               controller: _searchController,
               autofocus: true,
-              onChanged: (query) => filterResults(
-                  query,
-                  Provider.of<CharactersProvider>(context, listen: false)
-                      .people),
+              onChanged: (query) => filterResults(query, allPeople),
               maxLength: 25,
-              decoration: const InputDecoration(label: Text("Search")),
+              decoration: InputDecoration(
+                  label: const Text("Search"),
+                  suffixIcon: IconButton(
+                      onPressed: clearText, icon: const Icon(Icons.clear))),
             ),
           ),
           const SizedBox(
             height: 20,
           ),
-          Expanded(child: Consumer<CharactersProvider>(
-            builder: (ctx, allCharacters, _) {
-              return ListView.builder(
-                itemCount: allCharacters.people.length,
-                itemBuilder: (c, index) {
-                  return CharacterListItem(
-                      character: allCharacters.people[index]);
-                },
-              );
-            },
-          )),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredResults.length,
+              itemBuilder: (c, index) {
+                return CharacterListItem(character: filteredResults[index]);
+              },
+            ),
+          ),
         ],
       ),
     );

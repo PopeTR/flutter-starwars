@@ -1,7 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:star_wars/providers/characters_data.dart';
 import 'package:star_wars/screens/home.dart';
 import 'package:star_wars/screens/search.dart';
 
