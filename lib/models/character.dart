@@ -1,5 +1,6 @@
 class Character {
   final String name;
+  final String gender;
   final Species? species;
   final PersonStarshipsConnection? starshipConnection;
   final Planet? homeworld;
@@ -7,6 +8,7 @@ class Character {
 
   Character({
     required this.name,
+    required this.gender,
     this.species,
     this.starshipConnection,
     this.starships,
@@ -27,6 +29,7 @@ class Character {
 
     return Character(
       name: character['name'],
+      gender: character['gender'],
       species: character['species'] != null
           ? Species.fromJson(character['species'])
           : null,

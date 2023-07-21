@@ -34,6 +34,9 @@ final theme = ThemeData(
       cursorColor: starWarsYellow,
       selectionHandleColor: starWarsYellow,
     ),
+    filledButtonTheme: const FilledButtonThemeData(
+        style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(starWarsYellow))),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       selectedLabelStyle: TextStyle(color: starWarsYellow),
       selectedItemColor: starWarsYellow,

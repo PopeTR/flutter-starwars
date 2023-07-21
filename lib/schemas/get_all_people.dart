@@ -7,6 +7,7 @@ class GetAllPeopleSchema {
     totalCount
     people {
       name
+      gender
       species {
         classification
       }
