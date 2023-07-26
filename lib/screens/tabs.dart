@@ -1,14 +1,13 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:star_wars/screens/home.dart';
 import 'package:star_wars/screens/search.dart';
-
 import '../main.dart';
 import '../providers/music_data.dart';
 import '../utils/audio_utils.dart';
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   final AssetsAudioPlayer audioPlayer;
 
   const TabsScreen(
@@ -16,10 +15,10 @@ class TabsScreen extends StatefulWidget {
     super.key,
   });
   @override
-  State<TabsScreen> createState() => _TabsScreenState();
+  ConsumerState<TabsScreen> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
@@ -30,6 +29,9 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isMuted = ref.watch(musicProvider);
+    final musicalProvider = ref.read(musicProvider.notifier);
+
     Widget activePage = const HomeScreen();
     var activePageTitle = 'Characters';
 
@@ -44,24 +46,21 @@ class _TabsScreenState extends State<TabsScreen> {
       activePage = const SearchScreen();
       activePageTitle = 'Search';
     }
-
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Consumer<MusicProvider>(builder: (context, musicPlayerState, _) {
-            return IconButton(
-                onPressed: () {
-                  musicPlayerState.toggleMute();
-                  playAudio(widget.audioPlayer, musicPlayerState.isMuted);
-                },
-                icon: musicPlayerState.isMuted
-                    ? const Icon(
-                        Icons.music_off_rounded,
-                        color: starWarsYellow,
-                      )
-                    : const Icon(Icons.music_note_rounded,
-                        color: starWarsYellow));
-          })
+          IconButton(
+            onPressed: () {
+              musicalProvider.toggleMute();
+              playAudio(widget.audioPlayer, !isMuted);
+            },
+            icon: isMuted
+                ? const Icon(
+                    Icons.music_off_rounded,
+                    color: starWarsYellow,
+                  )
+                : const Icon(Icons.music_note_rounded, color: starWarsYellow),
+          ),
         ],
         title: Text(activePageTitle,
             style: Theme.of(context).appBarTheme.titleTextStyle),

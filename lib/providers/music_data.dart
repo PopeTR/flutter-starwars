@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MusicProvider extends ChangeNotifier {
-  bool _isMuted = false;
-  bool get isMuted => _isMuted;
+class MusicNotifier extends StateNotifier<bool> {
+  MusicNotifier() : super(false);
+
   void toggleMute() {
-    _isMuted = !_isMuted;
-    notifyListeners();
+    state = !state;
   }
 }
+
+final musicProvider = StateNotifierProvider<MusicNotifier, bool>((ref) {
+  return MusicNotifier();
+});

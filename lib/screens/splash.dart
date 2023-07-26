@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:star_wars/providers/films_data.dart';
 import 'package:star_wars/screens/tabs.dart';
-import '../providers/characters_data.dart';
-import '../providers/films_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen(this.audioPlayer, {super.key});
   final AssetsAudioPlayer audioPlayer;
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _SplashScreenState extends ConsumerState<SplashScreen>
     with WidgetsBindingObserver {
   @override
   void initState() {
@@ -39,8 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<FilmsProvider>(context, listen: false).fetchAllFilms(context);
-
+    ref.read(filmsProvider.notifier).fetchAllFilms(context);
     return Scaffold(
       body: SafeArea(
         child: Column(

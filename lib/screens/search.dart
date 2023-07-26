@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:star_wars/main.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:star_wars/models/character.dart';
-import '../providers/characters_data.dart';
+import 'package:star_wars/providers/characters_data.dart';
 import '../widgets/character_list_item.dart';
 import '../widgets/gender_filter_botton.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends ConsumerState<SearchScreen> {
   List<Character> allPeople = [];
   List<Character> filteredResults = [];
   final TextEditingController _searchController = TextEditingController();
@@ -28,11 +27,12 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> fetchData() async {
-    final charactersProvider =
-        Provider.of<CharactersProvider>(context, listen: false);
-    await charactersProvider.fetchAllPeople(context).then((_) {
+    await ref
+        .read(charactersProvider.notifier)
+        .fetchAllPeople(context)
+        .then((_) {
       setState(() {
-        allPeople = charactersProvider.people;
+        allPeople = ref.read(charactersProvider).people;
         filteredResults = allPeople;
       });
     });

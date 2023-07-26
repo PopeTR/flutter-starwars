@@ -1,10 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:star_wars/providers/characters_data.dart';
-import 'package:star_wars/providers/films_data.dart';
-import 'package:star_wars/providers/music_data.dart';
 import 'package:star_wars/screens/splash.dart';
 import 'package:star_wars/widgets/app_lifecycle_observer.dart';
 
@@ -63,7 +60,7 @@ void main() async {
       cache: GraphQLCache(),
     ),
   );
-  runApp(MyApp(client: client));
+  runApp(ProviderScope(child: MyApp(client: client)));
 }
 
 class MyApp extends StatefulWidget {
@@ -95,17 +92,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GraphQLProvider(
       client: widget.client,
-      child: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => CharactersProvider()),
-          ChangeNotifierProvider(create: (context) => FilmsProvider()),
-          ChangeNotifierProvider(create: (context) => MusicProvider()),
-        ],
-        child: MaterialApp(
-          title: 'Star Wars Characters',
-          theme: theme,
-          home: SplashScreen(audioPlayer),
-        ),
+      child: MaterialApp(
+        title: 'Star Wars Characters',
+        theme: theme,
+        home: SplashScreen(audioPlayer),
       ),
     );
   }

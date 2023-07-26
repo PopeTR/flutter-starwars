@@ -76,7 +76,7 @@ class DetailsScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: const Color.fromARGB(255, 255, 225, 0),
                     )),
-            Text('World: ${character!.homeworld!.name ?? ''}'),
+            Text('World: ${character!.homeworld!.name}'),
             Text(
                 'Species: ${character!.species != null ? character!.species!.classification!.toUpperCase() : 'NA'}'),
             Row(
