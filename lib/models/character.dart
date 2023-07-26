@@ -1,4 +1,5 @@
 class Character {
+  final String id;
   final String name;
   final String gender;
   final Species? species;
@@ -7,6 +8,7 @@ class Character {
   final List<String>? starships;
 
   Character({
+    required this.id,
     required this.name,
     required this.gender,
     this.species,
@@ -14,6 +16,7 @@ class Character {
     this.starships,
     this.homeworld,
   });
+
 // This allows you to print the value of the instance rather than read "Instance of ..."
   @override
   String toString() {
@@ -28,6 +31,7 @@ class Character {
     }
 
     return Character(
+      id: character['id'],
       name: character['name'],
       gender: character['gender'],
       species: character['species'] != null

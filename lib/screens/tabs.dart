@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:star_wars/screens/home.dart';
 import 'package:star_wars/screens/search.dart';
 import '../main.dart';
+import '../providers/favourites_data.dart';
 import '../providers/music_data.dart';
-import '../utils/audio_utils.dart';
+import '../extensions/audio_utils.dart';
+import 'favourites.dart';
 
 class TabsScreen extends ConsumerStatefulWidget {
   final AssetsAudioPlayer audioPlayer;
@@ -31,18 +33,19 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   Widget build(BuildContext context) {
     final isMuted = ref.watch(musicProvider);
     final musicalProvider = ref.read(musicProvider.notifier);
+    ref.watch(favouritesProvider);
 
     Widget activePage = const HomeScreen();
     var activePageTitle = 'Characters';
 
     if (_selectedPageIndex == 1) {
-      // final favouriteMeals = ref.watch(favouritesProvider);
-      // activePage = FavouritesScreen();
+      final favouriteCharacters = ref.watch(favouritesProvider);
+      activePage = FavouritesScreen(characters: favouriteCharacters);
       activePageTitle = 'Favourites';
     }
 
     if (_selectedPageIndex == 2) {
-      // final favouriteMeals = ref.watch(CharactersProvider());
+      // final favouriteCharacters = ref.watch(favouritesProvider);
       activePage = const SearchScreen();
       activePageTitle = 'Search';
     }
@@ -52,7 +55,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
           IconButton(
             onPressed: () {
               musicalProvider.toggleMute();
-              playAudio(widget.audioPlayer, !isMuted);
+              context.playAudio(widget.audioPlayer, !isMuted);
             },
             icon: isMuted
                 ? const Icon(

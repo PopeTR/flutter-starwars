@@ -130,9 +130,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               onChanged: filterResults,
               maxLength: 25,
               decoration: InputDecoration(
-                  label: const Text("Search"),
-                  suffixIcon: IconButton(
-                      onPressed: clearText, icon: const Icon(Icons.clear))),
+                label: const Text("Search"),
+                suffixIcon: IconButton(
+                  onPressed: clearText,
+                  icon: const Icon(Icons.clear),
+                ),
+              ),
             ),
           ),
           Padding(

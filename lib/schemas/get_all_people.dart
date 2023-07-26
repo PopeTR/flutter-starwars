@@ -6,6 +6,7 @@ class GetAllPeopleSchema {
   allPeople${hasFirst ? '(first: $first)' : ''} {
     totalCount
     people {
+      id
       name
       gender
       species {
