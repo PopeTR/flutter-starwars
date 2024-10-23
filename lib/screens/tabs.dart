@@ -1,11 +1,15 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:star_wars/providers/vehicles_data.dart';
 import 'package:star_wars/screens/home.dart';
 import 'package:star_wars/screens/search.dart';
+import 'package:star_wars/screens/ships.dart';
+import 'package:star_wars/screens/vehicles.dart';
 import '../main.dart';
 import '../providers/favourites_data.dart';
 import '../providers/music_data.dart';
+import '../providers/ships_data.dart';
 import '../extensions/audio_utils.dart';
 import 'favourites.dart';
 
@@ -49,6 +53,16 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       activePage = const SearchScreen();
       activePageTitle = 'Search';
     }
+
+    if (_selectedPageIndex == 3) {
+      activePage = const ShipsScreen();
+      activePageTitle = 'Ships';
+    }
+
+    if (_selectedPageIndex == 4) {
+      activePage = const VehiclesScreen();
+      activePageTitle = 'Vehicles';
+    }
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -90,6 +104,18 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
               Icons.search,
             ),
             label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.directions_boat,
+            ),
+            label: 'Ships',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.car_rental,
+            ),
+            label: 'Vehicles',
           ),
         ],
       ),

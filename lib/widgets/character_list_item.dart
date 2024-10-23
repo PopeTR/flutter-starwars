@@ -28,7 +28,10 @@ class CharacterListItem extends ConsumerWidget {
       },
       child: ListTile(
         title: Text(character.name),
+        minVerticalPadding: 0,
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
         subtitle: Text(character.homeworld!.name),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
         trailing: IconButton(
           onPressed: () {
             ref

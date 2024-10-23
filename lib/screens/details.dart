@@ -50,10 +50,10 @@ class DetailsScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: const Color.fromARGB(255, 255, 225, 0),
                   )),
-          Text(film!.releaseDate),
+          Text(film?.releaseDate ?? ""),
           const SizedBox(height: 8),
           Flexible(
-            child: Perspective(child: Crawler(text: film!.openingCrawl)),
+            child: Perspective(child: Crawler(text: film?.openingCrawl ?? "")),
           ),
         ],
       );
